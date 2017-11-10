@@ -1,0 +1,7 @@
+module ControlUnit(input [31:0] Instruction, output [31:0] out);
+
+	always @(Instruction) begin
+		out = Instruction;
+	end
+	
+endmodule 

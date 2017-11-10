@@ -1,0 +1,4 @@
+module InstructionMemory(input [31:0] PC, input clk, output reg[31:0] Instruction);
+
+
+endmodule 

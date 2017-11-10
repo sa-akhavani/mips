@@ -1,0 +1,17 @@
+module ALU(input [31:0]in1, input [31:0]in2, input [2:0]sel, output reg [31:0]O, output reg zero);
+    wire [31:0]hiReg , lowReg;
+    always @(sel, in1, in2) begin
+      case (sel)
+        0: O <= in1 + in2;
+        1: O <= in1 - in2;
+        4: O <= in1 & in2;
+        5: O <= in1 | in2;
+        4: O <= in1 ^ in2;
+        6: O <= hiReg;
+        7: O <= lowReg;
+		default : O<=32'b0;
+      endcase
+	 zero = (in1 - in2 == 0) ? 1 : 0;
+    end
+    assign {hiReg , lowReg} = (sel==5) ? in1 * in2 : {hiReg , lowReg};
+endmodule
