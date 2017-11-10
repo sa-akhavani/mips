@@ -1,0 +1,4 @@
+module IF_stage (input clk, input rst, input Br_taken, input [15:0] Br_offset, output [31:0] PC, output [31:0] Instruction);
+
+
+endmodule
