@@ -2,8 +2,8 @@ module IF_stage_reg(input clk, input rst, input flush, input[31:0] PC_in, input 
 
 always @(posedge clk) begin
 	if (rst) begin
-		PC = 32'dz;
-		Instruction = 32'dz;
+		PC = 32'd0;
+		Instruction = 32'd0;
 	end
 	else begin
 		PC = PC_in;

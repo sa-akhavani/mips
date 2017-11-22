@@ -2,16 +2,16 @@ module ID_stage_reg (input clk, input rst, input[4:0] Dest_in, input[31:0] Reg2_
     output reg[4:0] Dest, output reg[31:0] Reg2, output reg[31:0] Val2, output reg[31:0] Val1, output reg[31:0] PC_out, output reg Br_taken, output reg[3:0] EXE_CMD, output reg MEM_R_EN, output reg MEM_W_EN, output reg WB_EN);
 always @(posedge clk) begin
 	if (rst) begin
-		Dest = 5'dz;
-		PC_out = 32'dz;
-		Reg2 = 32'dz;
-		Val2 = 32'dz;
-		Val1 = 32'dz;
-		Br_taken = 1'dz;
-		EXE_CMD = 4'dz;
-		MEM_R_EN = 1'dz;
-		MEM_W_EN = 1'dz;
-		WB_EN = 1'dz;
+		Dest = 5'd0;
+		PC_out = 32'd0;
+		Reg2 = 32'd0;
+		Val2 = 32'd0;
+		Val1 = 32'd0;
+		Br_taken = 1'd0;
+		EXE_CMD = 4'd0;
+		MEM_R_EN = 1'd0;
+		MEM_W_EN = 1'd0;
+		WB_EN = 1'd0;
 	end
 	else begin
 		Dest = Dest_in;

@@ -1,95 +1,40 @@
-module ControlUnit(input clk, input rst, input [5:0] opcode, 
-		output reg [1:0] inConCheck, output reg inAND, output reg Is_Imm, output reg ST_or_BNE, 
-		output reg Mem_signals, output reg WB_En, output reg [3:0] EXE_CMD);
-reg MEM_R_EN, MEM_W_EN;
+module ControlUnit(input clk, input rst, input [5:0]opCode, output reg[1:0]conditionCheck, 
+output reg  is_brj, is_imm, st_bne,output reg [1:0] Mem_signals, output reg wbEn, output reg [3:0]exCommand);
 
- always@ (posedge clk, posedge rst) begin
-    {EXE_CMD, MEM_R_EN, MEM_W_EN, WB_En, Is_Imm, inAND, ST_or_BNE, inConCheck} = 12'b0;
-   Mem_signals = {MEM_R_EN, MEM_W_EN};
-   case(opcode)
-	6'd0: begin //NOP
-		EXE_CMD <= 4'd0;
-    end
-    6'd1: begin //ADD
-		EXE_CMD <= 4'd1;
-		WB_En <= 1'd1;
-    end
-    6'd3: begin //SUB
-		EXE_CMD <= 4'd2;
-		WB_En <= 1'd1;
-    end
-    6'd5: begin //AND
-		EXE_CMD <= 4'd4;
-		WB_En <= 1'd1;
-    end
-    6'd6: begin //Or
-		EXE_CMD <= 4'd5;
-		WB_En <= 1'd1;
-    end
-    6'd7: begin //NOR
-		EXE_CMD <= 4'd6;
-		WB_En <= 1'd1;
-    end
-    6'd8: begin //XOR
-		EXE_CMD <= 4'd7;
-		WB_En <= 1'd1;
-    end
-    6'd9: begin //SLA
-		EXE_CMD <= 4'd8;
-		WB_En <= 1'd1;
-    end
-    6'd10: begin //SLL
-		EXE_CMD <= 4'd8;
-		WB_En <= 1'd1;
-    end
-    6'd11: begin //SRA
-		EXE_CMD <= 4'd9;
-		WB_En <= 1'd1;
-    end
-    6'd12: begin //SRL
-		EXE_CMD <= 4'd10;
-		WB_En <= 1'd1;
-    end
+reg memRead, memWrite;
 
-	 
-    6'd32: begin //ADDI
-		EXE_CMD <= 4'd1;
-		Is_Imm <= 1'd1;
-		WB_En <= 1'd1;
-    end
-    6'd33: begin //SUBI
-		EXE_CMD <= 4'd2;
-		Is_Imm <= 1'd1;
-		WB_En <= 1'd1;
-    end
-    6'd36: begin //LD
-		EXE_CMD <= 4'd0;
-	    MEM_R_EN <= 1'd1;
-		WB_En <= 1'd1;
-    end
-    6'd37: begin //ST
-		EXE_CMD <= 4'd0;
-		MEM_W_EN <= 1'd1;
-		ST_or_BNE <= 1'd1;
-	end
-	6'd40: begin //BEZ
-		EXE_CMD <= 4'd0;
-		inAND <= 1'd1;
-		inConCheck <= 2'd0;
-    end
-	6'd41: begin //BNE
-		EXE_CMD <= 4'd0;
-		inAND <= 1'd1;
-		inConCheck <= 2'd1;
-		ST_or_BNE <= 1'd1;
-		
-    end
-	6'd42: begin //JMP
-		EXE_CMD <= 4'd0;
-		inAND <= 1'd1;
-		inConCheck <= 2'd2;
-    end
-	 
-   endcase
- end
-endmodule
+
+always @(*)begin
+   Mem_signals = {memRead, memWrite};
+	st_bne <= 0;
+	is_imm <= 0;
+	is_brj <= 0;
+	exCommand <= 4'b0000;
+	wbEn <= 1;
+	memRead <= 0;
+	memWrite <= 0;
+	conditionCheck <= 2'b11;
+	case(opCode)
+		6'd1: begin exCommand <= 4'b0000; end
+		6'd2: begin exCommand <= 4'b0010; end
+		6'd3: begin exCommand <= 4'b0010; end
+		6'd4: begin exCommand <= 4'b0101; end
+		6'd5: begin exCommand <=  4'b0100; end
+		6'd6: begin exCommand <=  4'b0101; end
+		6'd7: begin exCommand <=  4'b0110; end
+		6'd8: begin exCommand <=  4'b0111; end
+		6'd9: begin exCommand <=  4'b1000; end
+		6'd10: begin exCommand <= 4'b1000; end
+		6'd11: begin exCommand <= 4'b1001; end
+		6'd12: begin exCommand <= 4'b1010; end
+		6'd32: begin exCommand <= 4'b0000; is_imm <= 1;end
+		6'd33: begin exCommand <= 4'b0010; is_imm <= 1; end
+		6'd36: begin exCommand <= 4'b0000; memRead <= 1; end
+		6'd37: begin exCommand <= 4'b0000; memWrite <= 1; wbEn <= 0; st_bne<=1; end
+		6'd40: begin exCommand <= 4'bxxxx; wbEn <= 0; conditionCheck <= 2'b00; is_brj <= 1; is_imm <= 1; end
+		6'd41: begin exCommand <= 4'bxxxx; wbEn <= 0; conditionCheck <= 2'b01; is_brj <= 1; st_bne<=1; is_imm <= 1; end
+		6'd42: begin exCommand <= 4'bxxxx; wbEn <= 0; conditionCheck <= 2'b10; is_brj <= 1; is_imm <= 1; end
+	endcase
+end
+
+endmodule 

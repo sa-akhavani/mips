@@ -2,11 +2,11 @@ module MEM_stage_reg(input clk, input rst, input WB_en_in, input MEM_R_EN_in, in
 
 always @(posedge clk) begin
 	if (rst) begin
-		MEM_R_EN = 1'bz;
-		Mem_read_value = 1'bz;
-		ALU_result = 1'bz;
-		WB_en = 1'bz;
-		Dest = 1'bz;
+		MEM_R_EN = 1'b0;
+		Mem_read_value = 1'b0;
+		ALU_result = 1'b0;
+		WB_en = 1'b0;
+		Dest = 1'b0;
 	end
 	else begin
 		MEM_R_EN = MEM_R_EN_in;

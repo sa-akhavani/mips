@@ -3,10 +3,10 @@ module IF_stage (input clk, input rst, input Br_taken, input [31:0] Br_offset, o
 	wire [31:0] four, myMUX_out;
 	assign four	= {32'd4};
 	
-	PC_adder adder(pcOut, /*myMUX_out*/ four, adderOut);
+	PC_adder adder(pcOut, myMUX_out /*four*/, adderOut);
 	register PCreg(adderOut, clk, rst, pcOut);
 	InstructionMemory myInstructionMem(pcOut, clk, Inst);
-	MUX myMUX(four, Br_offset, myMUX_out);
+	MUX myMUX(four, {Br_offset[29:0], 2'b00}, Br_taken, myMUX_out);
 	
 	assign PC = pcOut;
 	assign Instruction = Inst;

@@ -3,13 +3,13 @@ module EXE_stage_reg(input clk, input rst, input WB_en_in, input MEM_R_EN_in, in
 
 always @(posedge clk) begin
 	if (rst) begin
-		WB_en = 1'dz;
-		MEM_R_EN = 1'dz;
-		MEM_W_EN = 1'dz;
-		PC = 32'dz;
-		ALU_result = 32'dz;
-		ST_val = 32'dz;
-		Dest = 5'dz;
+		WB_en = 1'd0;
+		MEM_R_EN = 1'd0;
+		MEM_W_EN = 1'd0;
+		PC = 32'd0;
+		ALU_result = 32'd0;
+		ST_val = 32'd0;
+		Dest = 5'd0;
 	end
 	else begin
 		WB_en = WB_en_in;

@@ -11,7 +11,7 @@ ControlUnit CU(clk, rst, Instruction[31:26], inConCheck, inAND, Is_Imm, ST_or_BN
 ConditionCheck myCK(reg1, reg2, inConCheck, outConCheck);
 and andami(Br_taken, outConCheck, inAND);
 SignExtend mySE(Instruction[15:0], extended);
-MUX myMUX(extended, reg2, Is_Imm, Val2);
+MUX myMUX(reg2, extended, Is_Imm, Val2);
 
 wire [4:0] mux2_out;
 MUX #(5) myMUX2(Instruction[15:11], Instruction[25:21], ST_or_BNE, mux2_out);
